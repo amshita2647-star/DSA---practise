@@ -34,47 +34,33 @@ NODE * insertTail(NODE *l,int data) //insert node at end
     t->next=makeNode(data); //connecting with last node
     return l;
 }
-int countNodes(NODE *l) //nodes count
+int is_increase(NODE *l)
 {
-    int cc=0;
-    while(l)
+    while(l&&l->next)
     {
-        cc=cc+1; l=l->next;
-    }
-    return cc;
-}
-int isEqual(NODE *l1 , NODE *l2)
-{
-    if(countNodes(l1) != countNodes(l2)) return 0;
-    while(l1 && l2)
-    {
-        if(l1->data != l2->data) return 0;
-        l1=l1->next; l2=l2->next;
+        int n=(l->next)->data;
+        if((l->data > n)) { return 0;}
+        l=l->next;
     }
     return 1;
 }
-NODE * makeList(NODE *l , int size)
+int main()
 {
-    printf("Enter values :");
-    for(int i=1;i<=size;i++)
+    NODE* l1=NULL;
+    int len;
+    printf("Enter the number of nodes");
+    scanf("%d",&len);
+    printf("Enter the values ");
+
+    for(int i=1;i<=len;i++)
     {
         int n;
         scanf("%d",&n);
-        if(!l) l=makeNode(n);
-        else {l=insertTail(l,n);}
+        if(!l1) l1=makeNode(n);
+        else {l1=insertTail(l1,n);}
     }
-    return l;
-}
-int main()
-{
-    int n1,n2;
-    NODE *l1=NULL;
-    NODE *l2=NULL;
-    printf("Enter size of l1: ");
-    scanf("%d",&n1);
-    l1=makeList(l1,n1);
-    printf("Enter size of l2: ");
-    scanf("%d",&n2);
-    l2=makeList(l2,n2);
-    printf("IS L1 and L2 EQUAL ? %s",isEqual(l1,l2)?"yes":"No");
+    printf("List l1 \n");
+    display(l1);
+    printf("\n\n");
+    printf("Is increasing : %s",is_increase(l1) ? "TRUE": "FALSE");
 }
