@@ -96,3 +96,26 @@ int main()
    printf("The number of terms in p3 =%d",P3.nT);
    return 0;    
 }
+
+
+// mulitplication of 2 polynomials
+POLY multpoly(POLY p1, POLY p2)
+{
+    POLY p3 = createPoly(); // Holds accumulated result
+    
+    for (int i = 0; i < p1.nT; i++)
+    {
+        POLY temp = createPoly(); // Holds partial product for p1.t[i] * p2
+        for (int j = 0; j < p2.nT; j++)
+        {
+            TERM t;
+            t.coef = p1.t[i].coef * p2.t[j].coef;
+            t.expo = p1.t[i].expo + p2.t[j].expo;
+            temp = attachTerm(temp, t);
+        }
+        // Accumulate partial product into p3 using existing addpoly
+        p3 = addpoly(p3, temp);
+    }
+    
+    return p3;
+}
