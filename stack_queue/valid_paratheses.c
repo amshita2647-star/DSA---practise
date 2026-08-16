@@ -1,72 +1,139 @@
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
+
 #define MAX 20
+
 typedef struct
 {
     char val[MAX];
     int top;
-}Stack;
+} Stack;
+
 Stack createstack()
 {
+    Stack s;
+    s.top = -1;
+    return s;
+}
 
-    Stack s; s.top=0; return s;
-}
-int isempty(Stack s){ return (s.top==0 );}
-int isfull(Stack s) { return (s.top == MAX-1 );}
-int push (Stack *s , char val)
+int isempty(Stack s)
 {
-    if(isfull(*s)) return 0;
-    else
-    { s->top+=1;
-    s->val[s->top]=val; return 1;}
+    return s.top == -1;
 }
-char pop (Stack *s )
-{
 
-    if(isempty(*s)) return '0';
-    char c=s->val[s->top];
-    s->top=s->top-1; return c;
+int isfull(Stack s)
+{
+    return s.top == MAX - 1;
 }
-int top(Stack s) {if(isempty(s)) return -999; else return s.val[s.top];}
+
+int push(Stack *s, char val)
+{
+    if (isfull(*s))
+        return 0;
+
+    s->top++;
+    s->val[s->top] = val;
+
+    return 1;
+}
+
+char pop(Stack *s)
+{
+    if (isempty(*s))
+        return '\0';
+
+    char c = s->val[s->top];
+    s->top--;
+
+    return c;
+}
+
+char top(Stack s)
+{
+    if (isempty(s))
+        return '\0';
+
+    return s.val[s.top];
+}
 
 int check(char c)
 {
-    if(c=='{'|| c=='(' || c=='[') return 1;
-    if(c=='}'|| c==')' || c==']') return 0;
+    if (c == '{' || c == '(' || c == '[')
+        return 1;
+
+    if (c == '}' || c == ')' || c == ']')
+        return 0;
+
     return -1;
 }
+
 int openclose(char close, char open)
 {
-    return
-        (close==')' && open=='(') ||
-        (close==']' && open=='[') ||
-        (close=='}' && open=='{');
+    return (close == ')' && open == '(') ||
+           (close == ']' && open == '[') ||
+           (close == '}' && open == '{');
 }
+
 int main()
 {
-    Stack s1=createstack(); char ch[MAX]; 
-    printf("Enter the string");
-    fgets(ch,sizeof(ch),stdin);
-    int length=strlen(ch);
-    for(int i=0;i<length;i++)
+    Stack s1 = createstack();
+    char ch[MAX];
+
+    printf("Enter the string: ");
+    fgets(ch, sizeof(ch), stdin);
+
+    int length = strlen(ch);
+    int balanced = 1;
+
+    for (int i = 0; i < length; i++)
     {
-        char c=ch[i];
-        if(check(c)==1) { if(push(&s1,c)){} }
-        else if(check(c)==0)
+        char c = ch[i];
+
+        // Opening bracket
+        if (check(c) == 1)
         {
-            if(openclose(c,pop(&s1)))
-                continue;
-            else
-                 break;
+            if (!push(&s1, c))
+            {
+                balanced = 0;
+                break;
+            }
         }
-        else continue;
+
+        // Closing bracket
+        else if (check(c) == 0)
+        {
+            // No opening bracket available
+            if (isempty(s1))
+            {
+                balanced = 0;
+                break;
+            }
+
+            char open = pop(&s1);
+
+            // Wrong type of opening bracket
+            if (!openclose(c, open))
+            {
+                balanced = 0;
+                break;
+            }
+        }
+
+        // Other characters are ignored
+        else
+        {
+            continue;
+        }
     }
 
-    if(isempty(s1)) printf("It is in balanced form");
+    // If something is still in stack, brackets are unmatched
+    if (!isempty(s1))
+        balanced = 0;
+
+    if (balanced)
+        printf("It is in balanced form\n");
     else
-        printf("Not in balanced form");
+        printf("Not in balanced form\n");
 
+    return 0;
 }
-
-
-
