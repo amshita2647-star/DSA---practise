@@ -34,7 +34,7 @@ void dcir(NODE *l)
         }
     }
 }
-NODE *insertTail(NODE *l, int data) {
+NODE *insertTail(NODE *l, int data) {  //INSERTION IN O(1) USING SWAPPING TRICK
 
     if (!l) {
         NODE *t = makeNode(data, NULL);
