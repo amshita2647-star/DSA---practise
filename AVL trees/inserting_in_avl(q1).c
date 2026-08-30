@@ -92,12 +92,13 @@ NODE* delete(NODE *t , int data)
             t->right = delete(t->right , t->data);
         }
     }
-    else if(t->data > data) { t->left = delete(t->left , data); }
+    else if(t->data > data) { t->left = delete(t->left , data); } 
     else { t->right = delete(t->right,data); }
     int bal = getbalance(t);
     //left heavy
     
-    if(bal > 1 && getbalance(t->left) >= 0) return RotateRight(t);
+    if(bal > 1 && getbalance(t->left) >= 0) return RotateRight(t); //child BL will be in between -1 , 0, 1 nor more than that 
+                                                                   //if goes more than that then child will be imbalance rotation must be done for cheild not parent
     if(bal > 1 && getbalance(t->left) < 0) 
     {
         t->left = RotateLeft(t->left);
