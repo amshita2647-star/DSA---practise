@@ -1,4 +1,5 @@
 //PS :Create a AVL tree by doing 1 insertion at a time and display the tree along with level numbers
+// added delete operation along side
 #include<stdio.h>
 #include<stdlib.h>
 typedef struct node
@@ -33,7 +34,7 @@ NODE* RotateLeft(NODE* Z)
 }
 int height(NODE *root)
 {
-    if(!height) return 0;
+    if(!root) return 0;
     int left = height(root->left);
     int right = height(root->right);
     return 1+((left>right) ? left : right);
@@ -47,14 +48,14 @@ NODE* insert(NODE *t , int data)
 {
     if(!t) return makeNode(data);
     if(data > t->data) t->right = insert(t->right , data);
-    if(data < t->data) t->left = insert(t->left,data);
+    else if(data < t->data) t->left = insert(t->left,data);
     else return t; // dupes not allowed
     
     int bal = getbalance(t);
     
     if(bal > 1 && data < t->left->data) return RotateRight(t);
     if(bal < -1 && data > t->right->data) return RotateLeft(t);
-    if(bal < 1 && data > t->left->data) 
+    if(bal > 1 && data > t->left->data) 
     {
         t->left = RotateLeft(t->left);
         return RotateRight(t);
@@ -67,7 +68,53 @@ NODE* insert(NODE *t , int data)
     return t;
     
 }
-
+int FindMin(NODE* t) //find MIN in Inorder successor
+{
+    if(!t->left) return t->data;
+    else return FindMin(t->left);
+}
+int FindMax(NODE *t) //find MAX in Inorder predeccessor
+{
+    if(!t->right) return t->data;
+    else return FindMax(t->right);
+}
+NODE* delete(NODE *t , int data)
+{
+    if(!t) return NULL;
+    if(t->data == data )
+    {
+        if(!t->left && !t->right) return NULL;
+        if(!t->left) return t->right;
+        if(!t->right) return t->left;
+        if(t->left && t->right)
+        {
+            t->data = FindMin(t->right);
+            t->right = delete(t->right , t->data);
+        }
+    }
+    else if(t->data > data) { t->left = delete(t->left , data); }
+    else { t->right = delete(t->right,data); }
+    int bal = getbalance(t);
+    //left heavy
+    
+    if(bal > 1 && getbalance(t->left) >= 0) return RotateRight(t);
+    if(bal > 1 && getbalance(t->left) < 0) 
+    {
+        t->left = RotateLeft(t->left);
+        return RotateRight(t);
+    }
+    
+    
+    //Right Heavy
+    if(bal < -1 && getbalance(t->right) < 0) return RotateLeft(t);
+    if(bal< -1 && getbalance(t->right) >= 0) 
+    {
+        t->right = RotateRight(t->right);
+        return RotateLeft(t);
+    }
+    return t;
+    
+}
 void inOrder(NODE *t)
 {
     if(t)
@@ -106,6 +153,8 @@ int main()
     t = insert(t,10);
     t = insert(t,20);
     t = insert(t,30);
+    t = insert(t,15);
+    t = insert(t,11);
+    t = delete(t,15);
     printByLevel(t);
 }
-
