@@ -86,36 +86,39 @@ void DFS(int u,int visited[])
         temp=temp->next;
     }
 }
-void print_atmost_k_distance(int start,int k)
+void print_atmost_k_distance(int start, int k)
 {
-    int visited[MAX]={0};
+    int visited[MAX] = {0};
     int queue[MAX];
-    int front =0;
-    int rear =0;
-    queue[rear++]=start;
+    int front = 0, rear = 0;
+
+    queue[rear++] = start;
+    visited[start] = 1;
+
     int level = 0;
-    while(front < rear && level <= k)
+
+    while (front < rear && level <= k)
     {
         int size = rear - front;
-        printf("level %d :",level);
-        for(int i=0;i<size;i++)
+        printf("level %d :", level);
+
+        for (int i = 0; i < size; i++)
         {
             int u = queue[front++];
-            node* temp = list[u];
-            while(temp != NULL)
+            printf(" %d", u);
+
+            for (int v = 0; v < n; v++)
             {
-                int v = temp->vertex;
-                if(visited[v] != 1)
+                if (adj[u][v] == 1 && !visited[v])
                 {
-                    printf("%2d",v);
-                    queue[rear++]=v;
-                    visited[v]=1;
+                    queue[rear++] = v;
+                    visited[v] = 1;
                 }
-                temp = temp->next;
             }
         }
-        level = level+1;
+
         printf("\n");
+        level++;
     }
 }
 
