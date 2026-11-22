@@ -86,12 +86,11 @@ void insert(TREE head, int x)
 {
     TREE t, n;
 
-    n = (TREE)malloc(sizeof(NODE));
-
+    n = malloc(sizeof(NODE));
     n->data = x;
 
     // Empty tree
-    if(head->rBit == 0)
+    if(head->lBit == 0)
     {
         n->left = head;
         n->right = head;
@@ -99,13 +98,13 @@ void insert(TREE head, int x)
         n->lBit = 0;
         n->rBit = 0;
 
-        head->right = n;
-        head->rBit = 1;
+        head->left = n;
+        head->lBit = 1;
 
         return;
     }
 
-    t = head->right;
+    t = head->left;  // Root is on LEFT of head
 
     while(1)
     {
