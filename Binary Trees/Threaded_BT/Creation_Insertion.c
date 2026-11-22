@@ -140,3 +140,22 @@ void insert(TREE head, int x)
         }
     }
 }
+//Traversal
+void inOrder(TREE head)
+{
+    TREE t = head->left;
+
+    if(head->lBit == 0)
+        return;
+
+    // Find first node
+    while(t->lBit == 1)
+        t = t->left;
+
+    // Visit remaining nodes
+    while(t != head)
+    {
+        printf("%d ", t->data);
+        t = inSucc(t);
+    }
+}
