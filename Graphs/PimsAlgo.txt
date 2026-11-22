@@ -1,0 +1,42 @@
+PRIM(V, E, edges)
+
+1. Start.
+
+2. Initialize:
+      visited[i] = 0 for all vertices
+      mstCount = 0
+      sum = 0
+      heapSize = 0
+
+3. Insert starting vertex (0, -1, 0) into Min Heap.
+      (weight, node, parent)
+
+4. Repeat while Min Heap is not empty:
+
+      a) Remove the minimum-weight element from heap.
+         Store its weight, node and parent.
+
+      b) If visited[node] = 1:
+             Continue to next iteration.
+
+      c) Mark visited[node] = 1.
+
+      d) Add weight to sum.
+
+      e) If parent != -1:
+             Store (parent, node, weight) in MST.
+             Increment mstCount.
+
+      f) For every edge (u, v, weight):
+
+             If u = node AND visited[v] = 0:
+                  Insert (weight, v, node) into Min Heap.
+
+             Else if v = node AND visited[u] = 0:
+                  Insert (weight, u, node) into Min Heap.
+
+5. Display all MST edges.
+
+6. Display sum as the total MST weight.
+
+7. Stop.
