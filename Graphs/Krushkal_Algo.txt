@@ -1,0 +1,64 @@
+                       1.Make Set
+1. Start.
+2. For each vertex i from 0 to V-1:
+      parent[i] = i
+      size[i] = 1
+3. Stop.
+
+                          2.FindUPar
+
+1. If parent[node] == node:
+      Return node.
+
+2. parent[node] = FINDUPAR(parent[node])
+   (Path Compression)
+
+3. Return parent[node].
+
+                      3.unionBySize(u,v)
+1. Find ultimate parents:
+      ulp_u = FINDUPAR(u)
+      ulp_v = FINDUPAR(v)
+
+2. If ulp_u == ulp_v:
+      Return.
+
+3. If size[ulp_u] < size[ulp_v]:
+      parent[ulp_u] = ulp_v
+      size[ulp_v] += size[ulp_u]
+
+4. Else:
+      parent[ulp_v] = ulp_u
+      size[ulp_u] += size[ulp_v]
+
+5. Stop.
+
+
+
+                                4.KRUSKAL(V,E,EDGES[])
+1. Start.
+
+2. Call MAKESET(V).
+
+3. Sort all edges in ascending order of weight.
+
+4. Initialize mstWt = 0.
+
+5. For each edge (u, v, wt) in sorted order:
+
+      a) Find ultimate parents of u and v.
+
+      b) If FINDUPAR(u) != FINDUPAR(v):
+
+             i) Add wt to mstWt.
+
+             ii) Call UNIONBYSIZE(u, v).
+
+      c) Otherwise:
+             Ignore the edge (it forms a cycle).
+
+6. Return mstWt.
+
+7. Stop.
+
+
